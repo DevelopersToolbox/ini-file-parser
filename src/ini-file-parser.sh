@@ -30,7 +30,7 @@ declare show_config_errors
 # -------------------------------------------------------------------------------- #
 # Any values that are found outside of a defined section need to be put somewhere  #
 # so they can be recalled as needed. Sections is set up with a 'default' for this  #
-# purpose.
+# purpose.                                                                         #
 # -------------------------------------------------------------------------------- #
 
 DEFAULT_SECTION='default'

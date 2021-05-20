@@ -1,17 +1,8 @@
 matrix:
   include:
   - language: ruby
-    name: Github Linguist (rvm 2.7)
-    rvm: 2.7
-    before_install:
-    - git clone https://github.com/TravisToolbox/github-linguist
-    install:
-    - "./github-linguist/install.sh"
-    script:
-    - "./github-linguist/scan.sh"
-  - language: ruby
-    name: YAML Linting (rvm 2.7)
-    rvm: 2.7
+    name: YAML Linting (rvm 3.0)
+    rvm: 3.0
     before_install:
     - git clone https://github.com/TravisToolbox/yaml-lint
     install:
@@ -29,8 +20,8 @@ matrix:
     script:
     - "./shellcheck/scan.sh"
   - language: ruby
-    name: Link Checking (rvm 2.7)
-    rvm: 2.7
+    name: Link Checking (rvm 3.0)
+    rvm: 3.0
     env:
     - WHITELIST="https://img.shields.io"
     - EXCLUDE_FILES="CHANGELOG.md"
@@ -43,4 +34,4 @@ matrix:
 notifications:
   email: false
   slack:
-    secure: u6/etg/maKdgTfIe5NnpEjdezAajNASHWiBJHvJIXDbwyOOpzDkrfr66E9dner5NZsC5P7uKalJGuA3SMT8ecMPmB9JhBQd6KWWcs2EBoWvwUdS8g0tg6alHbtIFsdvNwEWzEaCY1AnbRnC94ZdQD9cWAPRb2rTx8uhfrEKlVQRLNXeqi4+/eCDjqiOO/RM5cfrV+VqMh1plpaeppKo63zMLNwdu8X7Nhsf5v1/3ED/VFO0kjsXIkQK2Vm3g7WS1GIwGMdvYJu4XlTC5VyX/cV6FiAMz/dtqQEvu9dkSThG2nATe+xEwtpEjgLh+TZpROGWWWbh/810whzfr4EtOu2DjFpnx7R2jK1ctKYg83Rvs9oKl9z30rny4QBkVuMhxGDFy3nALJFdUY069brE+f5KJy1SSjy2jYR/Obzl3AsfEMsEM6LA/ySYwAekWizsfUzEcOFxVWX//4q2y8DECm/xxC9APVPjQNE8UpEHQVPbvw+FGGnWx2UW0KPEJ7VbdA/4jaHe1GYlEE2WRknLkbEgf10mDz4wyV4vGCOXG4dCmOsDjA2nj90K6lGIdLuTJFD20pt3FgECqp17d9RFj9hP7FdIB9zx7xXkXT8b4E+dADUJ7fahIynTfepZ8UhXhHB+vg3ruPuy7qvZwjIem7cax/r6rlb4l0vtq1FoMulg=
+    secure: MIaIXBL02d/b6OHOOpi5+aJtO6pPnciwWvMzA4nEBM9mKFvqJjy8RLnrX0ZTgO9YaPuUZ9VL0mEK4GogSfysLFjgqYsgE/8v5HPsATB5T5ipqVcomSvOJqjXtESxCAYUIc4Gsy8LaEQXjrmfODsla8Vi2CIdBz8x+5VsXq9aCR0i2BdJrJfZPclwtoo2mJn4p6BBojMQVeTqQyI9zberb34MUa/gbkmxnU3l9sPEiftdHEHcOyeJLPcHVKqmeHyRUYXeT5PBVKhd7z4WNgX0POlPDyWzf+SIM3d3OA54PVT/clM+aaeeIKeIYvfqijVcGZHQqe92OeyuPwzHrb0PQDYdB9+XwSBg7pCamy3Jg97JJJnOlNC0jba/todQ1hd9/yQjl5eDqAzXEidhln1e5YFboSCioLuT5yTk+07vjklXK13Wi0QYofs+W4gMfxfmOkn9yf0HWXaN+5ZB/ho87SH0yAxQsPhu/f+lRvV4WHQXJeekI/nOKAb0J41xpe/JRmg4tDN5dhqaarfpnDrqYy3JMiv6PYrUdcgunVAW/Qz158+v6tRVX3wjaE3V/qBAuLNo0NCa5W8/SSjsxpxkuDlyQKVslnjpvKFFQbEu2CZg6T4cgxOuZAEo8jIBG4jta1Z0MnfiHC2aD7r3+yCPojXDpMy579YiJWPv0kRCoAU=

@@ -1,0 +1,43 @@
+name: Request a new feature
+description: Got an idea for a new feature? Let us know what you want and we will see if we can add it
+title: "[Feature Request]: "
+labels: [enhancement, triage]
+assignees:
+  - tgwolf
+body:
+  - type: textarea
+    id: releated-to
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear and concise description of what the problem is. E.g. I'm always frustrated when ...
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: Suggested Solution
+      description: A clear and concise description of what you want to see implemented.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+    validations:
+      required: true
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: Please provide any additional information that you think will help us to resolve this bug.
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

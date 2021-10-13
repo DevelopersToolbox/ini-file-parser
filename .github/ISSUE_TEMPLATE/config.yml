@@ -1,1 +1,8 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Support us
+    url: https://ko-fi.com/wolfsoftware
+    about: Show your support
+  - name: Visit our website
+    url: https://wolfsoftware.com/
+    about: Visit the Wolf Software website and see what else we do and what services we offer

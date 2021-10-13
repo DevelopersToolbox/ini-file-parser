@@ -7,7 +7,9 @@ This changelog was automatically generated using [Caretaker](https://github.com/
 
 ### [Unreleased](https://github.com/DevelopersToolbox/ini-file-parser/compare/v0.1.0...HEAD)
 
-- Update travis slack integration due to new slack organisation [`[head]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/)
+- rebrand [`[head]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/)
+
+- Update travis slack integration due to new slack organisation [`[17d8d20]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/17d8d20d32ded53e8e6288d2b451eac063fe6c46)
 
 - Fix travis rvm versions and slack integration [`[0bfd570]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/0bfd570344275fb47e2391a5e166f723314db0fb)
 

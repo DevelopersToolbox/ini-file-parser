@@ -1,0 +1,22 @@
+name: Ask a question
+description: If you don't have a specific issue or bug to report you can still ask us questions and we will do our best to answer them
+title: "[Question]: "
+labels: [question, triage]
+assignees:
+  - tgwolf
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What is your question?
+      description: Please give us time to review your question and formulate an answer.
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

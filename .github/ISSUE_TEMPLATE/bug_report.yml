@@ -1,0 +1,58 @@
+name: Report a bug
+description: Found a bug? Let us knonw what the issue is and we will attempt to fix it
+title: "[Bug]: "
+labels: [bug, triage]
+assignees:
+  - tgwolf
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How do we reproduct the bug?
+      description: What are the steps we need to take to reproduce the behavior?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: screenshoots
+    attributes:
+      label: Screeenshots
+      description: Upload any screenshots that might help demonstrate the bug.
+    validations:
+      required: false
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional information
+      description: Please provide any additional information that you think will help us to resolve this bug.
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

@@ -155,7 +155,6 @@ function process_section_name()
     if [[ "${local_case_sensitive_sections}" = false ]]; then
         section=$(echo -e "${section}" | tr '[:upper:]' '[:lower:]')               # Lowercase the section name
     fi
-
     echo "${section}"
 }
 
@@ -253,7 +252,8 @@ function process_ini_file()
                 fi
                 eval "${section}_keys+=(${key})"                               # Use eval to add to the keys array
                 eval "${section}_values+=(${value})"                           # Use eval to add to the values array
-                eval "${section}_${key}=${value}"                              # Use eval to declare a variable
+#                eval "${section}_${key}=${value}"                              # Use eval to declare a variable
+                eval "${section}_${key}=\"${value}\""                              # Use eval to declare a variable
             fi
         fi
     done < "$1"

@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 
 This changelog was automatically generated using [Caretaker](https://github.com/DevelopersToolbox/caretaker) by [Wolf Software](https://github.com/WolfSoftware)
 
+### [v0.1.2](https://github.com/DevelopersToolbox/ini-file-parser/compare/v0.1.1...v0.1.2)
+
+> Released on January, 4th 2022
+
+- Additional security fix [`[head]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/)
+
 ### [v0.1.1](https://github.com/DevelopersToolbox/ini-file-parser/compare/v0.1.0...v0.1.1)
 
 > Released on January, 3rd 2022
 
-- Updated to fix issue #1 [`[head]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/)
+- Updated to fix issue #1 [`[9bcd06b]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/9bcd06b3c630a25f9f8940c778f345a6d81f7624)
 
 - rebrand [`[95e9817]`](https://github.com/DevelopersToolbox/ini-file-parser/commit/95e981711406b5787269baa7070f6e1974dd9a31)
 

@@ -251,9 +251,8 @@ function process_ini_file()
                     show_warning 'key %s - Defined multiple times within section %s\n' "${key}" "${section}"
                 fi
                 eval "${section}_keys+=(${key})"                               # Use eval to add to the keys array
-                eval "${section}_values+=(${value})"                           # Use eval to add to the values array
-#                eval "${section}_${key}=${value}"                              # Use eval to declare a variable
-                eval "${section}_${key}=\"${value}\""                              # Use eval to declare a variable
+                eval "${section}_values+=('${value}')"                         # Use eval to add to the values array
+                eval "${section}_${key}='${value}'"                            # Use eval to declare a variable
             fi
         fi
     done < "$1"

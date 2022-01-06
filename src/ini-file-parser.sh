@@ -193,12 +193,38 @@ function process_value()
     value="${value%%\#*}"                                                          # Remove in line right comments
     value="${value##*( )}"                                                         # Remove leading spaces
     value="${value%%*( )}"                                                         # Remove trailing spaces
-    value="${value#\"*}"                                                           # Remove leading string quotes
-    value="${value%\"*}"                                                           # Remove trailing string quotes
-    value="${value##*( )}"                                                         # Remove leading spaces
-    value="${value%%*( )}"                                                         # Remove trailing spaces
+
+    value=$(escape_string "$value")
 
     echo "${value}"
+}
+
+# -------------------------------------------------------------------------------- #
+# Escape string                                                                    #
+# -------------------------------------------------------------------------------- #
+# Replace ' with SINGLE_QUOTE to avoid issues with eval.                           #
+# -------------------------------------------------------------------------------- #
+
+function escape_string()
+{
+    local clean
+
+    clean=${1//\'/SINGLE_QUOTE}
+    echo "${clean}"
+}
+
+# -------------------------------------------------------------------------------- #
+# Un-Escape string                                                                 #
+# -------------------------------------------------------------------------------- #
+# Convert SINGLE_QUOTE back to ' when returning the value to the caller.           #
+# -------------------------------------------------------------------------------- #
+
+function unescape_string()
+{
+    local orig
+
+    orig=${1//SINGLE_QUOTE/\'}
+    echo "${orig}"
 }
 
 # -------------------------------------------------------------------------------- #
@@ -220,19 +246,19 @@ function process_ini_file()
     while read -r line; do
         line_number=$((line_number+1))
 
-        if [[ $line =~ ^# || -z $line ]]; then                             # Ignore comments / empty lines
+        if [[ $line =~ ^# || -z $line ]]; then                                 # Ignore comments / empty lines
             continue;
         fi
 
-        if [[ $line =~ ^"["(.+)"]"$ ]]; then                                  # Match pattern for a 'section'
+        if [[ $line =~ ^"["(.+)"]"$ ]]; then                                   # Match pattern for a 'section'
             section=$(process_section_name "${BASH_REMATCH[1]}")
 
             if ! in_array sections "${section}"; then
                 eval "${section}_keys=()"                                      # Use eval to declare the keys array
                 eval "${section}_values=()"                                    # Use eval to declare the values array
-                sections+=("$section")                                         # Add the section name to the list
+                sections+=("${section}")                                       # Add the section name to the list
             fi
-        elif [[ $line =~ ^(.*)"="(.*) ]]; then                                # Match patter for a key=value pair
+        elif [[ $line =~ ^(.*)"="(.*) ]]; then                                 # Match patter for a key=value pair
             key=$(process_key_name "${BASH_REMATCH[1]}")
             value=$(process_value "${BASH_REMATCH[2]}")
 
@@ -280,7 +306,8 @@ function get_value()
 
     for i in "${!keys[@]}"; do
         if [[ "${keys[$i]}" = "${key}" ]]; then
-            printf '%s' "${values[$i]}"
+            orig=$(unescape_string "${values[$i]}")
+            printf '%s' "${orig}"
         fi
     done
 }
@@ -308,7 +335,8 @@ function display_config()
         eval "values=( \"\${${section}_values[@]}\" )"
 
         for i in "${!keys[@]}"; do
-            printf '%s=%s\n' "${keys[$i]}" "${values[$i]}"
+            orig=$(unescape_string "${values[$i]}")
+            printf '%s=%s\n' "${keys[$i]}" "${orig}"
         done
     printf '\n'
     done
@@ -336,7 +364,8 @@ function display_config_by_section()
     eval "values=( \"\${${section}_values[@]}\" )"
 
     for i in "${!keys[@]}"; do
-        printf '%s=%s\n' "${keys[$i]}" "${values[$i]}"
+        orig=$(unescape_string "${values[$i]}")
+        printf '%s=%s\n' "${keys[$i]}" "${orig}"
     done
     printf '\n'
 }

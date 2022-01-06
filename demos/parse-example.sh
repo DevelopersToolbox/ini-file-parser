@@ -31,10 +31,10 @@ declare section1_value1
 # value of true.                                                                   #
 # -------------------------------------------------------------------------------- #
 
-#case_sensitive_sections=false
-#case_sensitive_keys=false
-#show_config_warnings=false
-#show_config_errors=false
+export case_sensitive_sections=false
+#export case_sensitive_keys=false
+#export show_config_warnings=false
+#export show_config_errors=false
 
 # -------------------------------------------------------------------------------- #
 # Use the source                                                                   #

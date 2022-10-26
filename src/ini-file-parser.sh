@@ -246,7 +246,7 @@ function process_ini_file()
     while read -r line; do
         line_number=$((line_number+1))
 
-        if [[ $line =~ ^# || -z $line ]]; then                                 # Ignore comments / empty lines
+        if [[ $line =~ ^# || $line =~ ^\; || -z $line ]]; then                                 # Ignore comments / empty lines
             continue;
         fi
 

@@ -132,7 +132,7 @@ function show_error()
         shift;
 
         # shellcheck disable=SC2059
-        printf "[ ERROR ] ${format}" "$@";
+        printf "[ ERROR ] ${format}" "$@" >&2;
     fi
 }
 

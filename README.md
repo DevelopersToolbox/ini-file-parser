@@ -45,8 +45,8 @@ There are 2 config files provided as examples.
 
 | Name | Description |
 | --- | --- |
-| [simple example](tests/simple-example.conf) | Simple config file, demonstrating sections and key=value key pairs. |
-| [complete example](tests/complete-example.conf) | Complex config file, demonstrating all of the processing rules, warnings and error conditions.|
+| [simple example](demos/simple-example.conf) | Simple config file, demonstrating sections and key=value key pairs. |
+| [complete example](demos/complete-example.conf) | Complex config file, demonstrating all of the processing rules, warnings and error conditions.|
 
 ### Simple config file
 ```
@@ -67,7 +67,7 @@ value_4=c3d4
 
 ## Example usage
 
-There is a complete working example available, [parse-example.sh](tests/parse-example.sh), but a 'snippet' example is given below, to show a simple single value extraction.
+There is a complete working example available, [parse-example.sh](demos/parse-example.sh), but a 'snippet' example is given below, to show a simple single value extraction.
 
 ```shell
 #!/usr/bin/env bash
@@ -83,6 +83,11 @@ echo $(get_value 'section1' 'value1')
 
 # Display the same value as above but using the global variables created as part of the processing.
 echo $section1_value1
+
+# Display Section, Key and Value Traversals
+echo ${sections[@]}
+echo ${section1_keys[@]}
+echo ${section1_values[@]}
 ```
 
 ## Processing rules

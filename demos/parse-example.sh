@@ -94,6 +94,17 @@ echo "Display Section 1 - Value 1 (Named variable)"
 echo "${section1_value1}"
 
 # -------------------------------------------------------------------------------- #
+# Section, Key and Value Traversals
+# -------------------------------------------------------------------------------- #
+# Traverse sections, keys and values of the section.                              #
+# -------------------------------------------------------------------------------- #
+
+echo "Display Section, Key and Value Traversals"
+echo ${sections[@]}
+echo ${section1_keys[@]}
+echo ${section1_values[@]}
+
+# -------------------------------------------------------------------------------- #
 # End of Script                                                                    #
 # -------------------------------------------------------------------------------- #
 # This is the end - nothing more to see here.                                      #

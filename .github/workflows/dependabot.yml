@@ -1,0 +1,53 @@
+name: Dependabot Pull Request Approve & Merge
+
+on: pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  dependabot:
+    name: Dependabot
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+      - name: Fetch Metadata
+        id: dependabot-metadata
+        uses: dependabot/fetch-metadata@5e5f99653a5b510e8555840e80cbf1514ad4af38  # v2.1.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Approve PR
+        if: ${{ steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor' }}
+        run: |
+          gh pr review --approve "${PR_URL}" -b "I'm **approving** this pull request because it includes a patch or minor update"
+          gh pr edit "${PR_URL}" --add-label "dependabot: auto approve"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-Merge Non-Major Updates
+        if: ${{ steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor' }}
+        run: |
+          gh pr comment "${PR_URL}" --body "I'm automatically merging this PR because it includes a patch or minor update"
+          gh pr merge --auto --squash --delete-branch "${PR_URL}"
+          gh pr edit "${PR_URL}" --add-label "dependabot: auto merge"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment & Label Major Updates
+        if: ${{ steps.dependabot-metadata.outputs.update-type == 'version-update:semver-major' }}
+        run: |
+          gh pr comment "${PR_URL}" --body "I'm **NOT** automatically merging this PR because it includes a major update of a dependency"
+          gh pr edit "${PR_URL}" --add-label "dependabot: manual merge"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

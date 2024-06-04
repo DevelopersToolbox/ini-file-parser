@@ -1,7 +1,7 @@
 name: Request a new feature
 description: Got an idea for a new feature? Let us know what you want and we will see if we can add it
 title: "[Feature Request]: "
-labels: [enhancement, triage]
+labels: ["type: feature", "state: triage"]
 assignees:
   - tgwolf
 body:
@@ -37,7 +37,7 @@ body:
     id: terms
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/DevelopersToolbox/ini-file-parser/blob/master/.github/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true

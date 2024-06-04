@@ -1,0 +1,100 @@
+name: Repository Validation
+
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.cff'
+  pull_request:
+    branches:
+      - '**'
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.cff'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  get-go-version:
+    name: Get Latest Go Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-language-versions.outputs.latest-versions }}
+
+    steps:
+      - name: Get Required Versions
+        uses: ActionsToolbox/get-language-versions-action@446919617fd774095b5dd3ed71c39dd3fd0d8f4f  # V0.1.3
+        id: get-language-versions
+        with:
+          language: "go"
+          highest-only: true
+          remove-patch-version: true
+
+  get-python-version:
+    name: Get Latest Python Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-language-versions.outputs.latest-versions }}
+
+    steps:
+      - name: Get Required Versions
+        uses: ActionsToolbox/get-language-versions-action@446919617fd774095b5dd3ed71c39dd3fd0d8f4f  # V0.1.3
+        id: get-language-versions
+        with:
+          language: "python"
+          highest-only: true
+          remove-patch-version: true
+
+  action-lint:
+    name: Action Lint
+    needs: get-go-version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # V4.1.6
+
+      - name: Setup Go ${{ needs.get-go-version.outputs.version }}
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7  # V5.0.1
+        with:
+          go-version: ${{ needs.get-go-version.outputs.version }}
+
+      - name: Perform Action Lint Analysis
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/action-lint/master/pipeline.sh)
+
+  yaml-lint:
+    name: YAML Lint
+    needs: get-python-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # V4.1.6
+
+      - name: Set up Python ${{ needs.get-python-version.outputs.version }}
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d  # V5.1.0
+        with:
+          python-version: ${{ needs.get-python-version.outputs.version }}
+
+      - name: Perform YAML Lint Analysis
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/yaml-lint/master/pipeline.sh)
+
+  repository-validation-pipeline:
+    if: always()
+    name: Repository Validation Pipeline
+    needs:
+      - action-lint
+      - yaml-lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # V4.1.6
+
+      - name: Check Job Statuses
+        run: .github/scripts/check-jobs.sh '${{ toJson(needs) }}'

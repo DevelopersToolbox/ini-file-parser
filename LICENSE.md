@@ -1,7 +1,7 @@
 The MIT License (MIT)
 =====================
 
-Copyright © `2009-2021` `Wolf Software`
+Copyright © `2009-2024` `Wolf Software`
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

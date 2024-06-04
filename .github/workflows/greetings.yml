@@ -1,0 +1,27 @@
+name: Greetings
+
+on:
+  pull_request:
+  issues:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  greetings:
+    name: Handle Greetings
+    permissions:
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Handle Greetings
+        uses: actions/first-interaction@34f15e814fe48ac9312ccf29db4e74fa767cbab7  # v1.3.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: "Thank you for raising your first issue - all contributions to this project are welcome!"
+          pr-message: "Thank you for raising your first pull request - all contributions to this project are welcome!"

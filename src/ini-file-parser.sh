@@ -65,19 +65,19 @@ local_show_config_errors=true
 function setup_global_variables
 {
     if [[ -n "${case_sensitive_sections}" ]] && [[ "${case_sensitive_sections}" = false || "${case_sensitive_sections}" = true ]]; then
-         local_case_sensitive_sections=$case_sensitive_sections
+         local_case_sensitive_sections=${case_sensitive_sections}
     fi
 
     if [[ -n "${case_sensitive_keys}" ]] && [[ "${case_sensitive_keys}" = false || "${case_sensitive_keys}" = true ]]; then
-         local_case_sensitive_keys=$case_sensitive_keys
+         local_case_sensitive_keys=${case_sensitive_keys}
     fi
 
     if [[ -n "${show_config_warnings}" ]] && [[ "${show_config_warnings}" = false || "${show_config_warnings}" = true ]]; then
-         local_show_config_warnings=$show_config_warnings
+         local_show_config_warnings=${show_config_warnings}
     fi
 
     if [[ -n "${show_config_errors}" ]] && [[ "${show_config_errors}" = false || "${show_config_errors}" = true ]]; then
-         local_show_config_errors=$show_config_errors
+         local_show_config_errors=${show_config_errors}
     fi
 }
 
@@ -132,7 +132,7 @@ function show_error()
         shift;
 
         # shellcheck disable=SC2059
-        printf "[ ERROR ] ${format}" "$@";
+        printf "[ ERROR ] ${format}" "$@" >&2;
     fi
 }
 
@@ -194,7 +194,7 @@ function process_value()
     value="${value##*( )}"                                                         # Remove leading spaces
     value="${value%%*( )}"                                                         # Remove trailing spaces
 
-    value=$(escape_string "$value")
+    value=$(escape_string "${value}")
 
     echo "${value}"
 }
@@ -246,11 +246,11 @@ function process_ini_file()
     while read -r line; do
         line_number=$((line_number+1))
 
-        if [[ $line =~ ^# || $line =~ ^\; || -z $line ]]; then                                 # Ignore comments / empty lines
+        if [[ ${line} =~ ^# || ${line} =~ ^\; || -z ${line} ]]; then                                 # Ignore comments / empty lines
             continue;
         fi
 
-        if [[ $line =~ ^"["(.+)"]"$ ]]; then                                   # Match pattern for a 'section'
+        if [[ ${line} =~ ^"["(.+)"]"$ ]]; then                                   # Match pattern for a 'section'
             section=$(process_section_name "${BASH_REMATCH[1]}")
 
             if ! in_array sections "${section}"; then
@@ -258,7 +258,7 @@ function process_ini_file()
                 eval "${section}_values=()"                                    # Use eval to declare the values array
                 sections+=("${section}")                                       # Add the section name to the list
             fi
-        elif [[ $line =~ ^(.*)"="(.*) ]]; then                                 # Match patter for a key=value pair
+        elif [[ ${line} =~ ^(.*)"="(.*) ]]; then                                 # Match patter for a key=value pair
             key=$(process_key_name "${BASH_REMATCH[1]}")
             value=$(process_value "${BASH_REMATCH[2]}")
 
@@ -305,8 +305,8 @@ function get_value()
     eval "values=( \"\${${section}_values[@]}\" )"
 
     for i in "${!keys[@]}"; do
-        if [[ "${keys[$i]}" = "${key}" ]]; then
-            orig=$(unescape_string "${values[$i]}")
+        if [[ "${keys[${i}]}" = "${key}" ]]; then
+            orig=$(unescape_string "${values[${i}]}")
             printf '%s' "${orig}"
         fi
     done
@@ -327,7 +327,7 @@ function display_config()
     local value=''
 
     for s in "${!sections[@]}"; do
-        section=${sections[$s]}
+        section=${sections[${s}]}
 
         printf '[%s]\n' "${section}"
 
@@ -335,8 +335,8 @@ function display_config()
         eval "values=( \"\${${section}_values[@]}\" )"
 
         for i in "${!keys[@]}"; do
-            orig=$(unescape_string "${values[$i]}")
-            printf '%s=%s\n' "${keys[$i]}" "${orig}"
+            orig=$(unescape_string "${values[${i}]}")
+            printf '%s=%s\n' "${keys[${i}]}" "${orig}"
         done
     printf '\n'
     done
@@ -364,8 +364,8 @@ function display_config_by_section()
     eval "values=( \"\${${section}_values[@]}\" )"
 
     for i in "${!keys[@]}"; do
-        orig=$(unescape_string "${values[$i]}")
-        printf '%s=%s\n' "${keys[$i]}" "${orig}"
+        orig=$(unescape_string "${values[${i}]}")
+        printf '%s=%s\n' "${keys[${i}]}" "${orig}"
     done
     printf '\n'
 }

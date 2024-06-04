@@ -1,0 +1,75 @@
+name: Delete Old Workflow Runs
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Number of days to retain workflow runs.'
+        required: true
+        default: '30'
+      minimum-runs:
+        description: 'The minimum number of runs to keep for each workflow.'
+        required: true
+        default: '6'
+
+  schedule:
+    - cron: '16 5 * * *'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DAYS: 30
+  MINIMUM_RUNS: 6
+
+permissions: read-all
+
+jobs:
+  set-runtime-values:
+    name: Set Runtime Values
+    runs-on: ubuntu-latest
+    outputs:
+      days: ${{ steps.set-output-defaults.outputs.days }}
+      minimum-runs: ${{ steps.set-output-defaults.outputs.minimum-runs }}
+
+    steps:
+      - name: Set Runtime Values
+        id: set-output-defaults
+        run: |
+          echo "days=${{ github.event.inputs.days || env.DAYS }}" >> "${GITHUB_OUTPUT}"
+          echo "minimum-runs=${{ github.event.inputs.minimum-runs || env.MINIMUM_RUNS }}" >> "${GITHUB_OUTPUT}"
+
+  delete-old-workflows:
+    name: Delete Old Workflow Runs
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    needs:
+      - set-runtime-values
+
+    steps:
+      - name: Delete Old Workflow Runs
+        uses: Mattraks/delete-workflow-runs@39f0bbed25d76b34de5594dceab824811479e5de  # v2.0.6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ needs.set-runtime-values.outputs.days }}
+          keep_minimum_runs: ${{ needs.set-runtime-values.outputs.minimum-runs }}
+
+  slack-workflow-status:
+    if: always()
+    name: Slack Post Workflow Notification
+    needs:
+      - delete-old-workflows
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Slack Workflow Notifications
+        if: ${{ github.event_name == 'schedule' && needs.delete-old-workflows.result != 'success'}}
+        uses: Gamesight/slack-workflow-status@68bf00d0dbdbcb206c278399aa1ef6c14f74347a  # v1.3.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          include_jobs: on-failure
+          include_commit_message: true

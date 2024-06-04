@@ -1,7 +1,7 @@
 name: Report a bug
 description: Found a bug? Let us knonw what the issue is and we will attempt to fix it
 title: "[Bug]: "
-labels: [bug, triage]
+labels: ["type: bug", "state: triage"]
 assignees:
   - tgwolf
 body:
@@ -52,7 +52,7 @@ body:
     id: terms
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/DevelopersToolbox/ini-file-parser/blob/master/.github/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true

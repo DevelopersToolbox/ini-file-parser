@@ -1,1 +1,11 @@
+### Hard Coded Minimums ###
+#
+# Because I use a Mac
+#
+**/.DS-Store
+
+#
+# Ignore Awesomebot output
+#
 **/ab-results*
+

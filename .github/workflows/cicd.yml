@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.cff'
+
+  pull_request:
+    branches:
+      - '**'
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.cff'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # v4.1.6
+
+      - name: Perform ShellCheck Analysis
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/shellcheck/master/pipeline.sh)
+
+  cicd-pipeline:
+    if: always()
+    name: CI/CD Pipeline
+    needs:
+      - shellcheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # v4.1.6
+
+      - name: Check Job Statuses
+        run: .github/scripts/check-jobs.sh '${{ toJson(needs) }}'

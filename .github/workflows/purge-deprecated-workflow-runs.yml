@@ -1,0 +1,47 @@
+name: Purge Deprecated Workflow Runs
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '34 4 * * 1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  purge-obsolete-workflows:
+    name: Purge Deprecated Workflow Runs
+    permissions:
+      actions: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Purge Deprecated Workflow Runs
+        uses: otto-de/purge-deprecated-workflow-runs@31a4e821d43e9a354cbd65845922c76e4b4b3633  # v 2.0.4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          remove-obsolete: true
+          remove-cancelled: true
+          remove-failed: true
+          remove-skipped: true
+
+  slack-workflow-status:
+    if: always()
+    name: Slack Post Workflow Notification
+    needs:
+      - purge-obsolete-workflows
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Slack Workflow Notifications
+        if: ${{ github.event_name == 'schedule' && needs.purge-obsolete-workflows.result != 'success'}}
+        uses: Gamesight/slack-workflow-status@68bf00d0dbdbcb206c278399aa1ef6c14f74347a  # v1.3.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          include_jobs: on-failure
+          include_commit_message: true

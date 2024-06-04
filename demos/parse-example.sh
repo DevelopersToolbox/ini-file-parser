@@ -16,6 +16,9 @@
 # -------------------------------------------------------------------------------- #
 
 declare section1_value1
+declare sections
+declare section1_keys
+declare section1_values
 
 # -------------------------------------------------------------------------------- #
 # Global Overrides                                                                 #
@@ -42,7 +45,7 @@ export case_sensitive_sections=false
 # Source the os-detect script to make the variables available.                     #
 # -------------------------------------------------------------------------------- #
 
-SCRIPTPATH="$( dirname "$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )" )"
+SCRIPTPATH="$( dirname "$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )" || true)"
 
 # shellcheck disable=SC1090,SC1091
 source "${SCRIPTPATH}"/src/ini-file-parser.sh
@@ -92,6 +95,19 @@ echo "${value}"
 
 echo "Display Section 1 - Value 1 (Named variable)"
 echo "${section1_value1}"
+
+# -------------------------------------------------------------------------------- #
+# Section, Key and Value Traversals                                                #
+# -------------------------------------------------------------------------------- #
+# Traverse sections, keys and values of the section.                               #
+# -------------------------------------------------------------------------------- #
+
+echo
+echo "Display Section, Key and Value Traversals"
+
+echo "${sections[@]}"
+echo "${section1_keys[@]}"
+echo "${section1_values[@]}"
 
 # -------------------------------------------------------------------------------- #
 # End of Script                                                                    #

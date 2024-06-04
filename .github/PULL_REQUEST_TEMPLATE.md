@@ -1,6 +1,9 @@
-Thanks for submitting a pull request! Please provide enough information so that others can review your pull request:
+# Thank You
 
-**Summary**
+Thanks for submitting a pull request! Please provide enough information so that
+others can review your pull request:
+
+## Summary
 
 <!-- Summary of the PR -->
 
@@ -10,19 +13,24 @@ This PR fixes/implements the following **bugs/features**
 * [ ] Feature 1
 * [ ] Breaking changes
 
-<!-- You can skip this if you're fixing a typo or adding an app to the Showcase. -->
+<!-- You can skip this if you're fixing a typo or adding an app to the
+Showcase. -->
 
-Explain the **motivation** for making this change. What existing problem does the pull request solve?
+Explain the **motivation** for making this change. What existing problem does
+the pull request solve?
 
-<!-- Example: When "Adding a function to do X", explain why it is necessary to have a way to do X. -->
+<!-- Example: When "Adding a function to do X", explain why it is necessary
+to have a way to do X. -->
 
-**Test plan (required)**
+## Test plan (required)
 
-Demonstrate the code is solid. Example: The exact commands you ran and their output, screenshots help greatly.
+Demonstrate the code is solid. Example: The exact commands you ran and their
+output, screenshots help greatly.
 
 <!-- Make sure tests pass on both Travis. -->
 
-**Closing issues**
+## Closing issues
 
-<!-- Put `fixes #XXXX` in your comment to auto-close the issue that your PR fixes (if such). -->
+<!-- Put `fixes #NNN` in your comment to auto-close the issue that your PR
+fixes (if such). -->
 Fixes #

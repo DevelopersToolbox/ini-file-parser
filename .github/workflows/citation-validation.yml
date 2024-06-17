@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
 
       - name: Setup Ruby ${{ needs.get-ruby-version.outputs.version }}
         uses: ruby/setup-ruby@78c01b705fd9d5ad960d432d3a0cfa341d50e410  # v1.179.1
@@ -61,7 +61,7 @@ jobs:
 
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
 
       - name: Validate CITATION.cff
         uses: citation-file-format/cffconvert-github-action@4cf11baa70a673bfdf9dad0acc7ee33b3f4b6084  # v2.0.0
@@ -78,7 +78,7 @@ jobs:
 
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29  # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
 
       - name: Check Job Statuses
         run: .github/scripts/check-jobs.sh '${{ toJson(needs) }}'

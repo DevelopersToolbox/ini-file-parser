@@ -27,6 +27,7 @@ declare section1_values
 #                                                                                  #
 # case_sensitive_sections - should section names be case sensitive                 #
 # case_sensitive_keys     - should key names be case sensitive                     #
+# default_to_uppercase    - should we default to uppercase?                        #
 # show_config_warnings    - should we show config warnings                         #
 # show_config_errors      - should we show config errors                           #
 #                                                                                  #
@@ -35,7 +36,8 @@ declare section1_values
 # -------------------------------------------------------------------------------- #
 
 export case_sensitive_sections=false
-#export case_sensitive_keys=false
+export case_sensitive_keys=false
+export default_to_uppercase=true
 #export show_config_warnings=false
 #export show_config_errors=false
 
@@ -94,7 +96,11 @@ echo "${value}"
 # -------------------------------------------------------------------------------- #
 
 echo "Display Section 1 - Value 1 (Named variable)"
-echo "${section1_value1}"
+if [[ "${default_to_uppercase}" = false ]]; then
+    echo "${section1_value1}"
+else
+    echo "${SECTION1_VALUE1}"
+fi
 
 # -------------------------------------------------------------------------------- #
 # Section, Key and Value Traversals                                                #
@@ -106,8 +112,14 @@ echo
 echo "Display Section, Key and Value Traversals"
 
 echo "${sections[@]}"
-echo "${section1_keys[@]}"
-echo "${section1_values[@]}"
+
+if [[ "${default_to_uppercase}" = false ]]; then
+    echo "${section1_keys[@]}"
+    echo "${section1_values[@]}"
+else
+    echo "${SECTION1_keys[@]}"
+    echo "${SECTION1_values[@]}"
+fi
 
 # -------------------------------------------------------------------------------- #
 # End of Script                                                                    #

@@ -16,12 +16,14 @@
 #                                                                                  #
 # case_sensitive_sections - should section names be case sensitive                 #
 # case_sensitive_keys     - should key names be case sensitive                     #
+# default_to_uppercase    - If we are using case insensitive, default to uppercase #
 # show_config_warnings    - should we show config warnings                         #
 # show_config_errors      - should we show config errors                           #
 # -------------------------------------------------------------------------------- #
 
 declare case_sensitive_sections
 declare case_sensitive_keys
+declare default_to_uppercase
 declare show_config_warnings
 declare show_config_errors
 
@@ -35,7 +37,7 @@ declare show_config_errors
 
 DEFAULT_SECTION='default'
 
-sections=( "${DEFAULT_SECTION}" )
+sections=()
 
 # -------------------------------------------------------------------------------- #
 # Local Variables                                                                  #
@@ -44,12 +46,14 @@ sections=( "${DEFAULT_SECTION}" )
 #                                                                                  #
 # local_case_sensitive_sections - should section names be case sensitive           #
 # local_case_sensitive_keys     - should key names be case sensitive               #
+# default_to_uppercase          - should we default to uppercase                   #
 # local_show_config_warnings    - should we show config warnings                   #
 # local_show_config_errors      - should we show config errors                     #
 # -------------------------------------------------------------------------------- #
 
 local_case_sensitive_sections=true
 local_case_sensitive_keys=true
+local_default_to_uppercase=false
 local_show_config_warnings=true
 local_show_config_errors=true
 
@@ -72,6 +76,10 @@ function setup_global_variables
          local_case_sensitive_keys=${case_sensitive_keys}
     fi
 
+    if [[ -n "${default_to_uppercase}" ]] && [[ "${default_to_uppercase}" = false || "${default_to_uppercase}" = true ]]; then
+         local_default_to_uppercase=${default_to_uppercase}
+    fi
+
     if [[ -n "${show_config_warnings}" ]] && [[ "${show_config_warnings}" = false || "${show_config_warnings}" = true ]]; then
          local_show_config_warnings=${show_config_warnings}
     fi
@@ -79,6 +87,11 @@ function setup_global_variables
     if [[ -n "${show_config_errors}" ]] && [[ "${show_config_errors}" = false || "${show_config_errors}" = true ]]; then
          local_show_config_errors=${show_config_errors}
     fi
+
+    DEFAULT_SECTION=$(handle_default_case "${DEFAULT_SECTION}")
+
+    # Move to from global settting to handle default uppercase option
+    sections+=("${DEFAULT_SECTION}")
 }
 
 # -------------------------------------------------------------------------------- #
@@ -137,6 +150,25 @@ function show_error()
 }
 
 # -------------------------------------------------------------------------------- #
+# Handle Default Case                                                              #
+# -------------------------------------------------------------------------------- #
+# Handle the default case of a section or key.                                     #
+# -------------------------------------------------------------------------------- #
+
+function handle_default_case()
+{
+    local str=$1
+
+    if [[ "${local_default_to_uppercase}" = false ]]; then
+        str=$(echo -e "${str}" | tr '[:upper:]' '[:lower:]')               # Lowercase the string
+    else
+        str=$(echo -e "${str}" | tr '[:lower:]' '[:upper:]')               # Uppercase the str
+    fi
+    echo "${str}"
+}
+
+
+# -------------------------------------------------------------------------------- #
 # Process Section Name                                                             #
 # -------------------------------------------------------------------------------- #
 # Once we have located a section name within the given config file, we need to     #
@@ -153,7 +185,7 @@ function process_section_name()
     section=$(echo -e "${section}" | sed 's/[^a-zA-Z0-9_]//g')                     # Remove non-alphanumberics (except underscore)
 
     if [[ "${local_case_sensitive_sections}" = false ]]; then
-        section=$(echo -e "${section}" | tr '[:upper:]' '[:lower:]')               # Lowercase the section name
+        section=$(handle_default_case "${section}")
     fi
     echo "${section}"
 }
@@ -174,7 +206,7 @@ function process_key_name()
     key=$(echo -e "${key}" | sed 's/[^a-zA-Z0-9_]//g')                             # Remove non-alphanumberics (except underscore)
 
     if [[ "${local_case_sensitive_keys}" = false ]]; then
-        key=$(echo -e "${key}" | tr '[:upper:]' '[:lower:]')                       # Lowercase the section name
+        key=$(handle_default_case "${key}")
     fi
     echo "${key}"
 }
@@ -300,6 +332,9 @@ function get_value()
     section=$(process_section_name "${1}")
     key=$(process_key_name "${2}")
 
+    section=$(handle_default_case "${section}")
+    key=$(handle_default_case "${key}")
+
     eval "keys=( \"\${${section}_keys[@]}\" )"
     eval "values=( \"\${${section}_values[@]}\" )"
 
@@ -357,6 +392,7 @@ function display_config_by_section()
     local keys=''
     local values=''
 
+    section=$(handle_default_case "${section}")
     printf '[%s]\n' "${section}"
 
     eval "keys=( \"\${${section}_keys[@]}\" )"

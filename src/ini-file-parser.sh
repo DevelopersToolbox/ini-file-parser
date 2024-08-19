@@ -243,29 +243,28 @@ function process_ini_file()
 
     shopt -s extglob
 
-    while read -r line; do
+    while IFS= read -r line || [ -n "$line" ]; do
+        line=$(echo "$line" | tr -d '\r')  # Remove carriage return if present
         line_number=$((line_number+1))
 
-        if [[ ${line} =~ ^# || ${line} =~ ^\; || -z ${line} ]]; then                                 # Ignore comments / empty lines
+        if [[ ${line} =~ ^# || ${line} =~ ^\; || -z ${line} ]]; then  # Ignore comments / empty lines
             continue;
         fi
 
-        if [[ ${line} =~ ^"["(.+)"]"$ ]]; then                                   # Match pattern for a 'section'
+        if [[ ${line} =~ ^"["(.+)"]"$ ]]; then  # Match pattern for a 'section'
             section=$(process_section_name "${BASH_REMATCH[1]}")
 
             if ! in_array sections "${section}"; then
-                eval "${section}_keys=()"                                      # Use eval to declare the keys array
-                eval "${section}_values=()"                                    # Use eval to declare the values array
-                sections+=("${section}")                                       # Add the section name to the list
+                eval "${section}_keys=()"  # Use eval to declare the keys array
+                eval "${section}_values=()"  # Use eval to declare the values array
+                sections+=("${section}")  # Add the section name to the list
             fi
-        elif [[ ${line} =~ ^(.*)"="(.*) ]]; then                                 # Match patter for a key=value pair
+        elif [[ ${line} =~ ^(.*)"="(.*) ]]; then  # Match pattern for a key=value pair
             key=$(process_key_name "${BASH_REMATCH[1]}")
             value=$(process_value "${BASH_REMATCH[2]}")
 
             if [[ -z ${key} ]]; then
                 show_error 'line %d: No key name\n' "${line_number}"
-            elif [[ -z ${value} ]]; then
-                show_error 'line %d: No value\n' "${line_number}"
             else
                 if [[ "${section}" == "${DEFAULT_SECTION}" ]]; then
                     show_warning '%s=%s - Defined on line %s before first section - added to "%s" group\n' "${key}" "${value}" "${line_number}" "${DEFAULT_SECTION}"
@@ -276,9 +275,9 @@ function process_ini_file()
                 if in_array "${key_array_name}" "${key}"; then
                     show_warning 'key %s - Defined multiple times within section %s\n' "${key}" "${section}"
                 fi
-                eval "${section}_keys+=(${key})"                               # Use eval to add to the keys array
-                eval "${section}_values+=('${value}')"                         # Use eval to add to the values array
-                eval "${section}_${key}='${value}'"                            # Use eval to declare a variable
+                eval "${section}_keys+=(${key})"  # Use eval to add to the keys array
+                eval "${section}_values+=('${value}')"  # Use eval to add to the values array
+                eval "${section}_${key}='${value}'"  # Use eval to declare a variable
             fi
         fi
     done < "$1"

@@ -15,10 +15,15 @@
 # cleaner to do it this way and also makes sure that shellcheck is 100% clean.     #
 # -------------------------------------------------------------------------------- #
 
-declare section1_value1
 declare sections
+
+declare section1_value1
 declare section1_keys
 declare section1_values
+
+declare SECTION1_VALUE1
+declare SECTION1_keys
+declare SECTION1_values
 
 # -------------------------------------------------------------------------------- #
 # Global Overrides                                                                 #

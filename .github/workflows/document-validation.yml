@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # v4.2.0
 
       - name: Setup Ruby ${{ needs.get-ruby-version.outputs.version }}
         uses: ruby/setup-ruby@f321cf5a4d1533575411f8752cf25b86478b0442 # v1.193.0
@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # v4.2.0
 
       - name: Setup Node ${{ needs.get-node-version.outputs.version }}
         uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6  # v4.0.4
@@ -96,7 +96,7 @@ jobs:
 
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # v4.2.0
 
       - name: Check Job Statuses
         run: .github/scripts/check-jobs.sh '${{ toJson(needs) }}'

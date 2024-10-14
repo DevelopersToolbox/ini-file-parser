@@ -58,7 +58,7 @@ jobs:
 
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # V4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871  # V4.2.1
 
       - name: Setup Go ${{ needs.get-go-version.outputs.version }}
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32  # V5.0.2
@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # V4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871  # V4.2.1
 
       - name: Set up Python ${{ needs.get-python-version.outputs.version }}
         uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3  # V5.2.0
@@ -94,7 +94,7 @@ jobs:
 
     steps:
       - name: Checkout the Repository
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # V4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871  # V4.2.1
 
       - name: Check Job Statuses
         run: .github/scripts/check-jobs.sh '${{ toJson(needs) }}'

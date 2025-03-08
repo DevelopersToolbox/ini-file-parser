@@ -113,12 +113,13 @@ It is worth noting that the global variables are created AFTER the processing ru
 
 ## Subroutines
 
-There are currently 4 subroutines that are exposed.
+There are currently 5 subroutines that are exposed.
 
 1. process\_ini\_file - Load a names ini/config file and create the required arrays.
 2. get\_value - Request a specific value (by key name) from a specific section.
 3. display\_config - Display the processed (clean) ini/config in ini/config file format.
 4. display\_config\_by\_section - As above but for a specific named section.
+5. global\_reset - Reset the script and remove all previously loaded ini file data.
 
 ## Global overrides
 

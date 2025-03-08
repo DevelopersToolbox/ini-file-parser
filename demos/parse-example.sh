@@ -64,6 +64,8 @@ source "${SCRIPTPATH}"/src/ini-file-parser.sh
 # -------------------------------------------------------------------------------- #
 
 process_ini_file 'complete-example.conf'
+global_reset
+process_ini_file 'complete-example.conf'
 
 # -------------------------------------------------------------------------------- #
 # Display Config                                                                   #

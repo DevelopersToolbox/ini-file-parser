@@ -260,6 +260,20 @@ function unescape_string()
 }
 
 # -------------------------------------------------------------------------------- #
+# Global Reset                                                                     #
+# -------------------------------------------------------------------------------- #
+# Unset the global sections list, re-initialise it and reset the default section.  #
+# -------------------------------------------------------------------------------- #
+
+function global_reset()
+{
+    unset sections
+    sections=()
+
+    sections+=("${DEFAULT_SECTION}")
+}
+
+# -------------------------------------------------------------------------------- #
 # Parse ini file                                                                   #
 # -------------------------------------------------------------------------------- #
 # Read a named file line by line and process as required.                          #
